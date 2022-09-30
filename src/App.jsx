@@ -15,14 +15,24 @@ export class App extends Component {
     ],
     filter: '',
   };
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
+
   addContact = contact => {
     this.setState(({ contacts }) => ({
       contacts: [contact, ...contacts],
     }));
   };
+
+  deleteContact = contactId => {
+    console.log('contactId :>> ', contactId);
+    this.setState(({ contacts: prevContacts }) => ({
+      contacts: prevContacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   checkContact = newName =>
     this.state.contacts.find(({ name }) => name === newName) ? true : false;
 
@@ -43,7 +53,10 @@ export class App extends Component {
         <Box ml="10px">
           <Box as="h2">Contacts</Box>
           <Filter filter={filter} onChange={this.handleChange} />
-          <ContactList outputContacts={outputContacts} />
+          <ContactList
+            outputContacts={outputContacts}
+            onDeleteContact={this.deleteContact}
+          />
         </Box>
       </Box>
     );
